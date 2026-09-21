@@ -23,7 +23,8 @@ export default function Home() {
     return Math.pow(gewicht, 0.75) * 3.01 * proteinfaktor; /** nur für Warmblut / Hannoveraner  */
   }
 
-  const [zeigeFormular, setzeZeigeFormular] = useState(false); 
+  const [berechnet, setzeBerechnet]=useState(false); 
+  const [zeigeFormular, setzeZeigeFormular] = useState(true); 
   const [pferdeName, setzePferdeName] = useState("");
   const [gewicht, setzeGewicht] = useState("");
   const [alter, SetzeAlter] = useState("");
@@ -187,7 +188,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
 
 
-
+  
   const energiebedarf = berechneEnergiebedarf(gewichtalsZahl, faktor * koeperfaktor);
   const proteinbedarf = berechneProteinbedarf(gewichtalsZahl, arbeit);
   const phosphorbedarf = berechnePhosphorbedarf(gewichtalsZahl);
@@ -203,42 +204,41 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
   const jodbedarf = berechneJodbedarf(gewichtalsZahl, arbeit);
   const gewichtVorhanden = gewicht !== "" && !isNaN(gewichtalsZahl) && gewichtalsZahl > 0 && gewichtalsZahl <= 1500;
   const alterVorhanden = alter !== "" && !isNaN(alterAlsZahl) && alterAlsZahl > 0 && alterAlsZahl <= 40;
+  const eingabeVollstaendig = pferdeName !="" && gewichtVorhanden && alterVorhanden;
 
   return (
-    <main>
-      <h1 className="px-8 py-12 text-4xl font-bold text-green-700">Equibyte</h1>
-      <button 
-       className="mt-6 ml-8 bg-green-700 text-white px-6 py-3 rounded-xl shadow-sm transition hover:bg-green-800"
-       onClick={() => {
-        console.log("Button wurde geklickt");
-        setzeZeigeFormular(true);
-      }}>
-        neues Pferde anlegen
-      </button>
+    <main className="min-h-screen bg-[#FAFAF8] px-8 py-10 max-w-6xl mx-auto">
+      <h1 className="text-5xl font-semibold tracking-tight text-green-800">Equibyte</h1>
+     
 
      {zeigeFormular && (
         <>
         
-          <div className="min-h-screen bg-gray-50 p-8 max-w-5xl mx-auto">
-            <h2> ich bin das Formular</h2>
-            <p>Bitte füllen Sie das Formular aus.</p>
+          <div className="bg-white p-6 max-w-5xl mx-auto">
+          <h2 className="text-xl font-semibold mb-4">Pferdedaten</h2>
+           <div className="grid grid-cols-3 gap-6 mb-8">
+            {/* Pferdename Eingabe*/}
+            <div className="flex flex-col gap-2"> 
             <label>Name des Pferdes:</label>
             <input 
             value={pferdeName} 
             onChange={(e) => setzePferdeName(e.target.value)}
+            className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
             />
-            
+           </div>
             {/* Pferdegewicht Eingabe*/}
+            <div className="flex flex-col gap-2"> 
             <label>Pferdegewicht (kg):</label>
             <input
             type ="number"
             max = "1500"
             value={gewicht} 
             onChange={(e) => setzeGewicht(e.target.value)}
-            className="border rounded-lg px-3 py-1 w-32"
+            className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
             />
-
+            </div>
             {/* Pferdealter Eingabe*/}
+            <div className="flex flex-col gap-2"> 
             <label> 
               Alter in Jahren:
               </label>
@@ -248,83 +248,112 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               max="40"
               value={alter} 
               onChange={(e) => SetzeAlter(e.target.value)}
+              className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
               />
-            {alterVorhanden && (<p>Alter: {alterAlsZahl} Jahre</p>)}
-            {alter === "" && (<p> Bitte gib das Alter ein.</p>)}
+             </div>
+             </div>
+
             {alterAlsZahl > 40 && ( <p> Das Alter darf maximal 40 Jahre betragen. </p>)}
             {alterAlsZahl <= 0 && alter !== "" &&  ( <p> Das Alter muss größer als 0 Jahre sein. </p>)}
 
-
+             
+           
+          <div className="grid grid-cols-3 gap-8 mb-6">
+            <div className="flex flex-col gap-2">
             <label>Körperzustand:</label>
             <select
             value={koerperzustand}
             onChange={(e) => setzeKoerperzustand(e.target.value)}
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
             >
-          
             <option value="untergewicht">Untergewicht</option>
             <option value="normalgewicht">Normalgewicht</option>
             <option value="uebergewicht">Übergewicht</option> 
             </select>
-
-
-
-
-
-            {/* Auswahl Arbeitsleistung*/}
-
-            
+          </div> 
+            {/* Auswahl Arbeitsleistung*/}            
+            <div className="flex flex-col gap-2">
             <label>Arbeitsleistung:</label>
             <select
             value={arbeit}
             onChange={(e) => setzeArbeit(e.target.value)}
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
             >
             <option value="erhaltung">Erhaltung</option>
             <option value="leicht">Leichte Arbeit</option>
             <option value="mittel">Mittlere Arbeit</option>
             <option value="schwer">Schwere Arbeit</option> 
             </select>
+            </div>
 
-            <p>Arbeitsleistung: {arbeit}</p>
-        
-            <p>Der Name des Pferdes ist: {pferdeName}</p>
 
-          {gewichtVorhanden && (<p>Pferdegewicht: {gewichtalsZahl} kg</p>)}
+          
+             <button 
+        className="mt-8 bg-green-700 text-white px-4 py-2 rounded-xl  hover:bg-green-700 transition"
+
+         onClick={() => {
+        console.log("Button wurde geklickt");
+          if(eingabeVollstaendig) {
+            setzeBerechnet(true);
+          } else {
+            alert ("Bitte fülle alle Felder aus.");
+          }
+          }}
+          > berechnen </button>
+          </div>
+          
+
+          
+
+          
 
           {/* Fehlermeldungen für Gewicht */}
-          {gewicht === "" && (<p> Bitte gib das Pferdegewicht ein.</p>)}
            {gewichtalsZahl >1500 && ( <p> Das Gewicht darf maximal 1500 kg betragen. </p>)}
            {gewichtalsZahl <= 0 && gewicht !== "" &&  ( <p> Das Gewicht muss größer als 0 kg sein. </p>)}
 
-         <div className="border roounded-xl p-4 mb-4 bg-gray-50">
-          <h3 className="font-semibold"> Energie & Proteine </h3>
-           {gewichtVorhanden && (<p>Energiebedarf: {energiebedarf.toFixed(1)} MJ ME</p>)}
-           {gewichtVorhanden && (<p>Proteinbedarf: {proteinbedarf.toFixed(1)} g dvRP</p>)}
+          { berechnet && (
+        <>
+         <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3"> Energie & Proteine </h3>
+           {gewichtVorhanden && (<p className="text-gray-600">Energiebedarf: {energiebedarf.toFixed(1)} MJ ME</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Proteinbedarf: {proteinbedarf.toFixed(1)} g dvRP</p>)}
         </div>
-
-        <div className="border roounded-xl p-4 mb-4 bg-gray-50">
-          <h3 className="font-semibold"> Mengenelemente </h3>
-           {gewichtVorhanden && (<p>Calciumbedarf: {calciumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p>Phosphorbedarf: {phosphorbedarf.toFixed(1)} g</p>)}
-           
-           {gewichtVorhanden && (<p>Magnesiumbedarf: {magnesiumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p>Natriumbedarf: {natriumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p>Kaliumbedarf: {kaliumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p>Chloridbedarf: {chloridbedarf.toFixed(1)} g</p>)}
-        </div>
-
-        <div className="border roounded-xl p-4 mb-4 bg-gray-50">
-           <h3 className="font-semibold"> Spurenelemente </h3>
-           {gewichtVorhanden && (<p>Zinkbedarf: {zinkbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p>Kupferbedarf: {kupferbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p>Manganbedarf: {manganbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p>Selenbedarf: {selenbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p>Jodbedarf: {jodbedarf.toFixed(1)} mg</p>)}
-
-           </div>
-          </div>
+        
           
+
+        <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3"> Mengenelemente </h3>
+           {gewichtVorhanden && (<p className="text-gray-600">Calciumbedarf: {calciumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Phosphorbedarf: {phosphorbedarf.toFixed(1)} g</p>)}
+           
+           {gewichtVorhanden && (<p className="text-gray-600">Magnesiumbedarf: {magnesiumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Natriumbedarf: {natriumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Kaliumbedarf: {kaliumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Chloridbedarf: {chloridbedarf.toFixed(1)} g</p>)}
+           
+        </div>
+        
+          
+        <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
+           <h3 className="text-lg font-semibold text-gray-800 mb-3"> Spurenelemente </h3>
+           {gewichtVorhanden && (<p className="text-gray-600">Zinkbedarf: {zinkbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Kupferbedarf: {kupferbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Manganbedarf: {manganbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Selenbedarf: {selenbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Jodbedarf: {jodbedarf.toFixed(1)} mg</p>)}
+        </div>
         </>
         )}
+         </div>
+        
+        
+        
+        
+           
+      </>
+      )}
+
+      
       
     </main>
   );
