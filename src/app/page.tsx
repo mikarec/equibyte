@@ -24,12 +24,12 @@ export default function Home() {
   }
 
   const [berechnet, setzeBerechnet]=useState(false); 
-  const [zeigeFormular, setzeZeigeFormular] = useState(true); 
   const [pferdeName, setzePferdeName] = useState("");
   const [gewicht, setzeGewicht] = useState("");
   const [alter, SetzeAlter] = useState("");
   const alterAlsZahl = Number(alter) || 0;
   const gewichtalsZahl= Number(gewicht) || 0;
+  
   
   
   const [arbeit, setzeArbeit] = useState("erhaltung");
@@ -57,6 +57,11 @@ export default function Home() {
     faktor = 2.00;
   }
 
+
+ /*Heumenge berechnen*/ 
+ function berechneHeumenge (gewicht: number):number {
+  return gewicht*0.02;
+ }
 
   /* Calciumbedarf berechnen */
   function berechneCalciumbedarf(gewicht: number, arbeit: string): number {
@@ -188,8 +193,19 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
 
 
+  const heumenge= berechneHeumenge(gewichtalsZahl);
+  const heuTrockensubstanz = heumenge * 0.877;
+  const heuEnergie = heuTrockensubstanz*7; //MJ ME nach LUFA 2025
   
+  const heuRohprotein = heuTrockensubstanz*76; 
+  const heuProtein = heuTrockensubstanz*45; 
+  const heuCalcium = heuTrockensubstanz * 4; 
+  const heuPhosphor = heuTrockensubstanz * 1.9;
+  const heuCaP = heuCalcium/heuPhosphor; 
+
+
   const energiebedarf = berechneEnergiebedarf(gewichtalsZahl, faktor * koeperfaktor);
+  const energieDifferenz = heuEnergie-energiebedarf; //für Differenz Heu Ist/soll
   const proteinbedarf = berechneProteinbedarf(gewichtalsZahl, arbeit);
   const phosphorbedarf = berechnePhosphorbedarf(gewichtalsZahl);
   const calciumbedarf = berechneCalciumbedarf(gewichtalsZahl, arbeit);
@@ -211,18 +227,20 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
       <h1 className="text-5xl font-semibold tracking-tight text-green-800">Equibyte</h1>
      
 
-     {zeigeFormular && (
-        <>
+     
         
           <div className="bg-white p-6 max-w-5xl mx-auto">
-          <h2 className="text-xl font-semibold mb-4">Pferdedaten</h2>
+          <h2 className="text-xl font-semibold mb-6">Pferdedaten</h2>
            <div className="grid grid-cols-3 gap-6 mb-8">
             {/* Pferdename Eingabe*/}
             <div className="flex flex-col gap-2"> 
             <label>Name des Pferdes:</label>
             <input 
             value={pferdeName} 
-            onChange={(e) => setzePferdeName(e.target.value)}
+            onChange={(e) => {setzePferdeName(e.target.value)
+
+              setzeBerechnet(false);}
+            }
             className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
             />
            </div>
@@ -233,9 +251,15 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
             type ="number"
             max = "1500"
             value={gewicht} 
-            onChange={(e) => setzeGewicht(e.target.value)}
+            
+            onChange={(e) => { setzeGewicht(e.target.value)
+            setzeBerechnet(false);
+          }}
+          
             className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
+            
             />
+
             </div>
             {/* Pferdealter Eingabe*/}
             <div className="flex flex-col gap-2"> 
@@ -263,7 +287,10 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
             <label>Körperzustand:</label>
             <select
             value={koerperzustand}
-            onChange={(e) => setzeKoerperzustand(e.target.value)}
+            onChange={(e) => { setzeKoerperzustand(e.target.value) 
+            setzeBerechnet(false);
+          }}
+            
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
             >
             <option value="untergewicht">Untergewicht</option>
@@ -276,7 +303,11 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
             <label>Arbeitsleistung:</label>
             <select
             value={arbeit}
-            onChange={(e) => setzeArbeit(e.target.value)}
+            onChange={(e) => { setzeArbeit(e.target.value)
+
+              setzeBerechnet(false);
+            }}
+
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
             >
             <option value="erhaltung">Erhaltung</option>
@@ -311,50 +342,61 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
            {gewichtalsZahl >1500 && ( <p> Das Gewicht darf maximal 1500 kg betragen. </p>)}
            {gewichtalsZahl <= 0 && gewicht !== "" &&  ( <p> Das Gewicht muss größer als 0 kg sein. </p>)}
 
-          { berechnet && (
+          { berechnet && gewichtVorhanden &&(
         <>
-         <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3"> Energie & Proteine </h3>
-           {gewichtVorhanden && (<p className="text-gray-600">Energiebedarf: {energiebedarf.toFixed(1)} MJ ME</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Proteinbedarf: {proteinbedarf.toFixed(1)} g dvRP</p>)}
+        <div className="grid grid-cols-2 gap-4">
+         <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
+          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Grundbedarf (SOLL)</h3>
+           {gewichtVorhanden && (<p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Energie: {energiebedarf.toFixed(1)} MJ ME</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Protein {proteinbedarf.toFixed(1)} g dvRP</p>)}
         </div>
-        
-          
 
-        <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
+         <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
+          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Nährstoffdeckung aus Heu (IST)</h3>
+          <p className="text-xs text-gray-500 mb-4"  > auf Basis der LUFA-Durchnittswerte 2025</p>
+          
+          <p className="text-gray-600">Heu: {heumenge.toFixed(1)} Kg</p>
+           <p className="text-gray-600">Energie: {heuEnergie.toFixed(1)} MJ ME {" "}
+            <span className="text-orange-600">
+              ({energieDifferenz.toFixed(1)} MJ)
+            </span>
+            </p>
+            
+           <p className="text-gray-600">Protein: {heuProtein.toFixed(1)} g dvRP</p>
+           <p className="text-gray-600">Calcium: {heuCalcium.toFixed(1)} g</p>
+           <p className="text-gray-600">Phosphor: {heuPhosphor.toFixed(1)} g</p>
+        </div>
+
+        </div>
+        
+
+        <div className="border border-gray-200 rounded-xl p-5 mb-4 bg-gray-50">
           <h3 className="text-lg font-semibold text-gray-800 mb-3"> Mengenelemente </h3>
-           {gewichtVorhanden && (<p className="text-gray-600">Calciumbedarf: {calciumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Phosphorbedarf: {phosphorbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Calcium: {calciumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Phosphor: {phosphorbedarf.toFixed(1)} g</p>)}
            
-           {gewichtVorhanden && (<p className="text-gray-600">Magnesiumbedarf: {magnesiumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Natriumbedarf: {natriumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Kaliumbedarf: {kaliumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Chloridbedarf: {chloridbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Magnesiumb: {magnesiumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Natrium: {natriumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Kalium: {kaliumbedarf.toFixed(1)} g</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Chlorid: {chloridbedarf.toFixed(1)} g</p>)}
            
         </div>
         
           
-        <div className="border border-gray-300 rounded-xl p-4 mb-4 bg-white">
+        <div className="border border-gray-200 rounded-xl p-5 mb-4 bg-gray-50">
            <h3 className="text-lg font-semibold text-gray-800 mb-3"> Spurenelemente </h3>
-           {gewichtVorhanden && (<p className="text-gray-600">Zinkbedarf: {zinkbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Kupferbedarf: {kupferbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Manganbedarf: {manganbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Selenbedarf: {selenbedarf.toFixed(1)} mg</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Jodbedarf: {jodbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Zink: {zinkbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Kupfer: {kupferbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Mangan: {manganbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Selen: {selenbedarf.toFixed(1)} mg</p>)}
+           {gewichtVorhanden && (<p className="text-gray-600">Jod: {jodbedarf.toFixed(1)} mg</p>)}
         </div>
         </>
         )}
          </div>
         
-        
-        
-        
-           
-      </>
-      )}
-
-      
-      
+    
     </main>
   );
 }
