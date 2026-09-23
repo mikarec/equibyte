@@ -25,6 +25,7 @@ export default function Home() {
 
   const [berechnet, setzeBerechnet]=useState(false); 
   const [pferdeName, setzePferdeName] = useState("");
+  const [pferdetyp, setzePferdetyp] = useState(""); 
   const [gewicht, setzeGewicht] = useState("");
   const [alter, SetzeAlter] = useState("");
   const alterAlsZahl = Number(alter) || 0;
@@ -249,30 +250,15 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
   const jodbedarf = berechneJodbedarf(gewichtalsZahl, arbeit);
   const gewichtVorhanden = gewicht !== "" && !isNaN(gewichtalsZahl) && gewichtalsZahl > 0 && gewichtalsZahl <= 1500;
   const alterVorhanden = alter !== "" && !isNaN(alterAlsZahl) && alterAlsZahl > 0 && alterAlsZahl <= 40;
-  const eingabeVollstaendig = pferdeName !="" && gewichtVorhanden && alterVorhanden;
+  const eingabeVollstaendig = gewichtVorhanden && alterVorhanden;
 
   return (
     <main className="min-h-screen bg-[#FAFAF8] px-8 py-10 max-w-6xl mx-auto">
       <h1 className="text-5xl font-semibold tracking-tight text-green-800">Equibyte</h1>
-     
-
-     
         
           <div className="bg-white p-6 max-w-5xl mx-auto">
           <h2 className="text-xl font-semibold mb-6">Pferdedaten</h2>
-           <div className="grid grid-cols-3 gap-6 mb-8">
-            {/* Pferdename Eingabe*/}
-            <div className="flex flex-col gap-2"> 
-            <label>Name des Pferdes:</label>
-            <input 
-            value={pferdeName} 
-            onChange={(e) => {setzePferdeName(e.target.value)
-
-              setzeBerechnet(false);}
-            }
-            className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
-            />
-           </div>
+           <div className="grid grid-cols-3 gap-6 mb-8">    
             {/* Pferdegewicht Eingabe*/}
             <div className="flex flex-col gap-2"> 
             <label>Pferdegewicht (kg):</label>
@@ -288,29 +274,47 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
             className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
             
             />
-
             </div>
+
             {/* Pferdealter Eingabe*/}
             <div className="flex flex-col gap-2"> 
-            <label> 
-              Alter in Jahren:
+              <label> 
+                Alter in Jahren:
               </label>
               <input 
-              type="number" 
-              min="1"
-              max="40"
-              value={alter} 
-              onChange={(e) => SetzeAlter(e.target.value)}
-              className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
+                type="number" 
+                min="1"
+                max="40"
+                value={alter} 
+                onChange={(e) => SetzeAlter(e.target.value)}
+                className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
               />
-             </div>
+            </div>
+
+            {/* Pferdetyp Eingabe*/}
+            <div className="flex flex-col gap-2">
+              <label>Pferdetyp</label>
+              <select 
+                value={pferdetyp}
+                onChange={(e) => {
+                  setzePferdetyp(e.target.value); 
+                  setzeBerechnet(false); 
+                }} 
+                className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-sm outline-none"
+              > 
+                <option value="warmblut"> Warmblut / Großpferd</option>
+                <option value="vollblut"> Vollblut</option>
+                <option value="kaltblut"> Kaltblut</option>
+                <option value="pony"> Pony</option>
+              </select>
+            </div>
              </div>
 
             {alterAlsZahl > 40 && ( <p> Das Alter darf maximal 40 Jahre betragen. </p>)}
             {alterAlsZahl <= 0 && alter !== "" &&  ( <p> Das Alter muss größer als 0 Jahre sein. </p>)}
 
-             
-           
+        
+          
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div className="flex flex-col gap-2">
             <label>Körperzustand:</label>
@@ -337,6 +341,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               setzeBerechnet(false);
             }}
 
+
             className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
             >
             <option value="erhaltung">Erhaltung</option>
@@ -345,11 +350,9 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
             <option value="schwer">Schwere Arbeit</option> 
             </select>
             </div>
-
-
           
              <button 
-        className="mt-8 bg-green-700 text-white px-4 py-2 rounded-xl  hover:bg-green-700 transition"
+        className="mt-8 bg-green-700 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
 
          onClick={() => {
         console.log("Button wurde geklickt");
@@ -363,9 +366,10 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
           </div>
           
 
-          
+       
 
-          
+
+        
 
           {/* Fehlermeldungen für Gewicht */}
            {gewichtalsZahl >1500 && ( <p> Das Gewicht darf maximal 1500 kg betragen. </p>)}
@@ -503,8 +507,6 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
         )}
          </div>
          
-        
-    
     </main>
   );
 }
