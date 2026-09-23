@@ -3,8 +3,18 @@ import { useState } from "react";
 export default function Home() {
 
 /* Energiewerte nach GfE */
-  function berechneEnergiebedarf(gewicht: number, faktor: number): number {
-    return Math.pow(gewicht, 0.75) *0.52 * faktor; /** nur für Warmblut / Hannoveraner  */
+  function berechneEnergiebedarf(gewicht: number, faktor: number, pferdetyp: string): number {
+    let energieFaktor =0.52; 
+    if (pferdetyp === "vollblut") {
+      energieFaktor = 0.64; 
+    }
+    if (pferdetyp === "pony") {
+      energieFaktor = 0.4; 
+    }
+    if (pferdetyp ==="kaltblut") {
+      energieFaktor = 0.45;
+    }
+    return Math.pow(gewicht, 0.75) *energieFaktor * faktor; /** abhängig vom Pferdetyp  */
   } 
 
 
@@ -215,7 +225,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
   const heuNSCProzent = ((heuZucker+heustaerke)/heuTrockensubstanz)/10; 
  // LUFA ENDE
 
-  const energiebedarf = berechneEnergiebedarf(gewichtalsZahl, faktor * koeperfaktor);
+  const energiebedarf = berechneEnergiebedarf(gewichtalsZahl, faktor * koeperfaktor, pferdetyp);
   const energieDifferenz = heuEnergie-energiebedarf; //für Differenz Heu Ist/soll
   
   const proteinbedarf = berechneProteinbedarf(gewichtalsZahl, arbeit);
