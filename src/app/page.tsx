@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState } from "react"; 
 export default function Home() {
 
 /* Energiewerte nach GfE */
@@ -264,9 +264,11 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
   return (
     <main className="min-h-screen bg-[#FAFAF8] px-8 py-10 max-w-6xl mx-auto">
-      <h1 className="text-5xl font-semibold tracking-tight text-green-800">Equibyte</h1>
+      <h1 className="text-4xl font-semibold tracking-tight text-green-800">Equibyte</h1>
+      <p className="mt-3 text-lg text-gray-500">Fütterung mit System</p>
+      <p className="mt-2 max-w-2xl text-gray-600"> Bedarf berechnen, Ration analysieren und Nährstofflücken erkennen.</p>
         
-          <div className="bg-white p-6 max-w-5xl mx-auto">
+          <div className="bg-white">  {/*p-6 max-w-5xl mx-auto*/}
           <h2 className="text-xl font-semibold mb-6">Pferdedaten</h2>
            <div className="grid grid-cols-3 gap-6 mb-8">    
             {/* Pferdegewicht Eingabe*/}
