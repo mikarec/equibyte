@@ -408,30 +408,70 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               <div className="grid grid-cols-2 gap-4">
                 <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">Grundbedarf (SOLL)</h3>
-                  {gewichtVorhanden && <p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>}
-                  {gewichtVorhanden && <p className="text-gray-600">Energie: {energiebedarf.toFixed(1)} MJ ME</p>}
-                  {gewichtVorhanden && <p className="text-gray-600">Protein {proteinbedarf.toFixed(1)} g dvRP</p>}
+                   <p className="text-xs text-gray-500 mb-4"> Bedarf nach GfE Empfehlungen</p>
+
+
+                   <div className="mt-3 rounded-xl bg-white p-4 shadow-sm">
+                    
+                    <p className="text-sm text-gray-500"> Heu </p>
+                    <p className="mt-1 text-2xl font-bold text-emerald-950">{heumenge.toFixed(1)} kg 
+                    </p>
+                  </div>
+                 
+                  
+                  <div className="mt-3 rounded-xl bg-white p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">⚡Energie (ME) </p>
+                    <p className="mt-1 text-2xl font-bold text-emerald-950">{energiebedarf.toFixed(1)} MJ
+                    </p>
+                  </div>
+
+                  <div className="mt-3 rounded-xl bg-white p-4 shadow-sm">
+                    
+                    <p className="text-sm text-gray-500">🌱Protein (dvRP) </p>
+                    <p className="mt-1 text-2xl font-bold text-emerald-950"> {proteinbedarf.toFixed(1)} g 
+                    </p>
+                  </div>
+
                 </div>
 
                 <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">Nährstoffdeckung aus Heu (IST)</h3>
                   <p className="text-xs text-gray-500 mb-4">auf Basis der LUFA-Durchnittswerte 2025</p>
-                  <p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>
+
+
+                   <div className="mt-3 rounded-xl bg-green-100/60 p-4"> 
+                    <p className="text-sm text-gray-500">Heu:</p>
+                    <p className="text-2xl font-bold text-emerald-950">{heumenge.toFixed(1)} kg</p>
+                    </div>
+
+                  
+                   <div className="mt-3 rounded-xl bg-green-100/60 p-4"> 
+                    <p className="text-sm text-gray-500">⚡Energie (ME)</p>
+                    <p className="text-2xl font-bold text-emerald-950">{heuEnergie.toFixed(1)} MJ </p>
+                    <p className={`mt-1 text-sm font-semibold ${energieDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      {energieDifferenz >=0? "+" : ""}
+                       {energieDifferenz.toFixed(1) } MJ 
+                       </p>
+                       </div>
+
+
+
+
+                   <div className="mt-3 rounded-xl bg-green-100/60 p-4"> 
+                    <p className="text-sm text-gray-500">🌱Protein (dvRP)</p>
+                    <p className="text-2xl font-bold text-emerald-950">{heuEnergie.toFixed(1)} MJ </p>
+                    <p className={`mt-1 text-sm font-semibold ${proteinDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      {proteinDifferenz >=0? "+" : ""}
+                       {proteinDifferenz.toFixed(1) } g 
+                       </p>
+                       </div>
+
                   <p className="text-gray-600">Trockensubstanz (TS): 87.7 %</p>
                   <p className="text-gray-600">Rohfaser: 32.8 % der TS</p>
                   <p className="text-gray-600">Rohasche: 7.0 % der TS</p>
-                  <p className="text-gray-600">
-                    Energie: {heuEnergie.toFixed(1)} MJ ME{" "}
-                    <span className={`font-semibold ${energieDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({energieDifferenz.toFixed(1)} MJ)
-                    </span>
-                  </p>
-                  <p className="text-gray-600">
-                    Protein: {heuProtein.toFixed(1)} g dvRP{" "}
-                    <span className={`font-semibold ${proteinDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({proteinDifferenz.toFixed(1)} g)
-                    </span>
-                  </p>
+
+
+
                   <p className="text-gray-600">Zucker: {heuZucker.toFixed(1)} g</p>
                   <p className="text-gray-600">Stärke: {heustaerke.toFixed(1)} g</p>
                   <p className="text-gray-600">NSC: {heuNSCProzent.toFixed(1)} % in TS</p>
@@ -455,32 +495,39 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
                   <p className="text-gray-600">
                     Calcium: {heuCalcium.toFixed(1)} g{" "}
                     <span className={`font-semibold ${calciumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({calciumDifferenz.toFixed(1)} g)
+                      {calciumDifferenz >=0? "+" : ""}
+                       {calciumDifferenz.toFixed(1) } g 
+                      
                     </span>
                   </p>
                   <p className="text-gray-600">
                     Phosphor: {heuPhosphor.toFixed(1)} g{" "}
                     <span className={`font-semibold ${phosphorDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({phosphorDifferenz.toFixed(1)} g)
+                      {phosphorDifferenz >=0? "+" : ""}
+                       {phosphorDifferenz.toFixed(1) } g 
                     </span>
                   </p>
                   <p className="text-gray-600">Ca:P: {heuCaP.toFixed(1)} : 1</p>
+
                   <p className="text-gray-600">
                     Magnesium: {heuMagnesium.toFixed(1)}{" "}
                     <span className={`font-semibold ${magnesiumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({magnesiumDifferenz.toFixed(1)} g)
+                      {magnesiumDifferenz >=0? "+" : ""}
+                       {magnesiumDifferenz.toFixed(1) } g 
                     </span>
                   </p>
                   <p className="text-gray-600">
                     Natrium: {heuNatrium.toFixed(1)}{" "}
                     <span className={`font-semibold ${natriumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({natriumDifferenz.toFixed(1)} g)
+                      {natriumDifferenz >=0? "+" : ""}
+                       {natriumDifferenz.toFixed(1) } g 
                     </span>
                   </p>
                   <p className="text-gray-600">
                     Kalium: {heuKalium.toFixed(1)}{" "}
                     <span className={`font-semibold ${kaliumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({kaliumDifferenz.toFixed(1)} g)
+                      {kaliumDifferenz >=0? "+" : ""}
+                       {kaliumDifferenz.toFixed(1) } g 
                     </span>
                   </p>
                 </div>
@@ -502,19 +549,22 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
                   <p className="text-gray-600">
                     Zink: {heuZink.toFixed(1)} mg{" "}
                     <span className={`font-semibold ${zinkDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({zinkDifferenz.toFixed(1)} mg)
+                      {zinkDifferenz >=0? "+" : ""}
+                       {zinkDifferenz.toFixed(1)}mg 
                     </span>
                   </p>
                   <p className="text-gray-600">
                     Kupfer: {heuKupfer.toFixed(1)} mg{" "}
                     <span className={`font-semibold ${kupferDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({kupferDifferenz.toFixed(1)} mg)
+                      {kupferDifferenz >=0? "+" : ""}
+                       {kupferDifferenz.toFixed(1)}mg 
                     </span>
                   </p>
                   <p className="text-gray-600">
                     Selen: {heuSelen.toFixed(1)} mg{" "}
                     <span className={`font-semibold ${selenDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
-                      ({selenDifferenz.toFixed(1)} mg)
+                      {selenDifferenz >=0? "+" : ""}
+                       {selenDifferenz.toFixed(1)}mg 
                     </span>
                   </p>
                 </div>
