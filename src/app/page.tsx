@@ -263,262 +263,279 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
   const eingabeVollstaendig = gewichtVorhanden && alterVorhanden;
 
   return (
-    <main className="min-h-screen bg-[#FAFAF8] px-8 py-10 max-w-6xl mx-auto">
-      <h1 className="text-4xl font-semibold tracking-tight text-green-800">Equibyte</h1>
-      <p className="mt-3 text-lg text-gray-500">Fütterung mit System</p>
-      <p className="mt-2 max-w-2xl text-gray-600"> Bedarf berechnen, Ration analysieren und Nährstofflücken erkennen.</p>
-        
-          <div className="bg-white">  {/*p-6 max-w-5xl mx-auto*/}
+   
+    <main className="mx-auto bg-[#FAFAF8] max-w-6xl mx-auto overflow-hidden py-10">
+
+      <div className="relative">
+
+        {/* HERO BEREICH */}
+        <div className="relative min-h-[400px] overflow-hidden">
+
+
+         <img
+         src="/horse-head3.png"
+         alt="Pferd auf der Weide"
+        className="absolute inset-0 h-full w-full object-cover object-top"
+        />
+
+  <div className="relative z-10 flex min-h-[400px] items-center px-12 md:px-20">
+    <div className="max-w-xl -translate -x-20" >
+      <h1 className="text-6xl font-bold tracking-tight text-emerald-950">
+        Equibyte
+      </h1>
+      <p className="mt-4 text-2xl text-gray-500">
+        Fütterung mit System
+      </p>
+      <p className="mt-3 max-w-lg text-lg text-gray-500">
+        Bedarf berechnen, Ration analysieren <br/> 
+        und Nährstofflücken erkennen. 
+      </p>
+      <div className="mt-6 h-[2px] w-12 bg-gray-400"></div>
+    </div>
+  </div>
+</div>
+
+        {/* CARD MIT FORMULAR — jetzt mit gesamtem Inhalt drin */}
+        <div className="relative z-20 mx-auto -mt-12 max-w-5xl rounded-2xl bg-white p-3 mg:p-6 shadow-lg">
+
           <h2 className="text-xl font-semibold mb-6">Pferdedaten</h2>
-           <div className="grid grid-cols-3 gap-6 mb-8">    
+
+          <div className="grid grid-cols-3 gap-6 mb-8">
             {/* Pferdegewicht Eingabe*/}
-            <div className="flex flex-col gap-2"> 
-            <label>Pferdegewicht (kg):</label>
-            <input
-            type ="number"
-            max = "1500"
-            value={gewicht} 
-            
-            onChange={(e) => { setzeGewicht(e.target.value)
-            setzeBerechnet(false);
-          }}
-          
-            className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
-            
-            />
+            <div className="flex flex-col gap-2">
+              <label >Gewicht (kg):</label>
+              <input
+                type="number"
+                max="1500"
+                value={gewicht}
+                onChange={(e) => {
+                  setzeGewicht(e.target.value);
+                  setzeBerechnet(false);
+                }}
+                className="border border-gray-300 rounded-xl bg-white px-3 py-1 h-10 w-full"
+              />
             </div>
 
             {/* Pferdealter Eingabe*/}
-            <div className="flex flex-col gap-2"> 
-              <label> 
-                Alter in Jahren:
-              </label>
-              <input 
-                type="number" 
+            <div className="flex flex-col gap-2">
+              <label>Alter:</label>
+              <input
+                type="number"
                 min="1"
                 max="40"
-                value={alter} 
+                value={alter}
                 onChange={(e) => SetzeAlter(e.target.value)}
-                className="border border-gray-300 rounded-xl bg-white px-3 py-1 w-full"
+                className="border border-gray-300 rounded-xl bg-white py-1 px-3 h-10 w-full"
               />
             </div>
 
             {/* Pferdetyp Eingabe*/}
             <div className="flex flex-col gap-2">
-              <label>Pferdetyp</label>
-              <select 
+              <label>Typ</label>
+              <select
                 value={pferdetyp}
                 onChange={(e) => {
-                  setzePferdetyp(e.target.value); 
-                  setzeBerechnet(false); 
-                }} 
-                className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-sm outline-none"
-              > 
+                  setzePferdetyp(e.target.value);
+                  setzeBerechnet(false);
+                }}
+                className="w-full h-10 rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-sm outline-none"
+              >
                 <option value="warmblut"> Warmblut / Großpferd</option>
                 <option value="vollblut"> Vollblut</option>
                 <option value="kaltblut"> Kaltblut</option>
                 <option value="pony"> Pony</option>
               </select>
             </div>
-             </div>
+          </div>
 
-            {alterAlsZahl > 40 && ( <p> Das Alter darf maximal 40 Jahre betragen. </p>)}
-            {alterAlsZahl <= 0 && alter !== "" &&  ( <p> Das Alter muss größer als 0 Jahre sein. </p>)}
+          {alterAlsZahl > 40 && <p>Das Alter darf maximal 40 Jahre betragen.</p>}
+          {alterAlsZahl <= 0 && alter !== "" && <p>Das Alter muss größer als 0 Jahre sein.</p>}
 
-        
-          
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div className="flex flex-col gap-2">
-            <label>Körperzustand:</label>
-            <select
-            value={koerperzustand}
-            onChange={(e) => { setzeKoerperzustand(e.target.value) 
-            setzeBerechnet(false);
-          }}
-            
-            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
-            >
-            <option value="untergewicht">Untergewicht</option>
-            <option value="normalgewicht">Normalgewicht</option>
-            <option value="uebergewicht">Übergewicht</option> 
-            </select>
-          </div> 
-            {/* Auswahl Arbeitsleistung*/}            
-            <div className="flex flex-col gap-2">
-            <label>Arbeitsleistung:</label>
-            <select
-            value={arbeit}
-            onChange={(e) => { setzeArbeit(e.target.value)
-
-              setzeBerechnet(false);
-            }}
-
-
-            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
-            >
-            <option value="erhaltung">Erhaltung</option>
-            <option value="leicht">Leichte Arbeit</option>
-            <option value="mittel">Mittlere Arbeit</option>
-            <option value="schwer">Schwere Arbeit</option> 
-            </select>
+              <label>Körperzustand:</label>
+              <select
+                value={koerperzustand}
+                onChange={(e) => {
+                  setzeKoerperzustand(e.target.value);
+                  setzeBerechnet(false);
+                }}
+                className="w-full h-10 rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+              >
+                <option value="untergewicht">Untergewicht</option>
+                <option value="normalgewicht">Normalgewicht</option>
+                <option value="uebergewicht">Übergewicht</option>
+              </select>
             </div>
-          
-             <button 
-        className="mt-8 bg-green-700 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
 
-         onClick={() => {
-        console.log("Button wurde geklickt");
-          if(eingabeVollstaendig) {
-            setzeBerechnet(true);
-          } else {
-            alert ("Bitte fülle alle Felder aus.");
-          }
-          }}
-          > berechnen </button>
+            <div className="flex flex-col gap-2">
+              <label>Arbeitsleistung:</label>
+              <select
+                value={arbeit}
+                onChange={(e) => {
+                  setzeArbeit(e.target.value);
+                  setzeBerechnet(false);
+                }}
+                className="w-full h-10 rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm outline-none focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+              >
+                <option value="erhaltung">Erhaltung</option>
+                <option value="leicht">Leichte Arbeit</option>
+                <option value="mittel">Mittlere Arbeit</option>
+                <option value="schwer">Schwere Arbeit</option>
+              </select>
+            </div>
+
+            <button
+              className="mt-6  bg-green-700 text-white px-2 py-2 rounded-xl hover:bg-green-700 transition"
+              onClick={() => {
+                console.log("Button wurde geklickt");
+                if (eingabeVollstaendig) {
+                  setzeBerechnet(true);
+                } else {
+                  alert("Bitte fülle alle Felder aus.");
+                }
+              }}
+            >
+              berechnen
+            </button>
           </div>
-          
 
+          {gewichtalsZahl > 1500 && <p>Das Gewicht darf maximal 1500 kg betragen.</p>}
+          {gewichtalsZahl <= 0 && gewicht !== "" && <p>Das Gewicht muss größer als 0 kg sein.</p>}
+
+          {berechnet && gewichtVorhanden && (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">Grundbedarf (SOLL)</h3>
+                  {gewichtVorhanden && <p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Energie: {energiebedarf.toFixed(1)} MJ ME</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Protein {proteinbedarf.toFixed(1)} g dvRP</p>}
+                </div>
+
+                <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">Nährstoffdeckung aus Heu (IST)</h3>
+                  <p className="text-xs text-gray-500 mb-4">auf Basis der LUFA-Durchnittswerte 2025</p>
+                  <p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>
+                  <p className="text-gray-600">Trockensubstanz (TS): 87.7 %</p>
+                  <p className="text-gray-600">Rohfaser: 32.8 % der TS</p>
+                  <p className="text-gray-600">Rohasche: 7.0 % der TS</p>
+                  <p className="text-gray-600">
+                    Energie: {heuEnergie.toFixed(1)} MJ ME{" "}
+                    <span className={`font-semibold ${energieDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({energieDifferenz.toFixed(1)} MJ)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Protein: {heuProtein.toFixed(1)} g dvRP{" "}
+                    <span className={`font-semibold ${proteinDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({proteinDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">Zucker: {heuZucker.toFixed(1)} g</p>
+                  <p className="text-gray-600">Stärke: {heustaerke.toFixed(1)} g</p>
+                  <p className="text-gray-600">NSC: {heuNSCProzent.toFixed(1)} % in TS</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Mengenelemente</h3>
+                  {gewichtVorhanden && <p className="text-gray-600">Calcium: {calciumbedarf.toFixed(1)} g</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Phosphor: {phosphorbedarf.toFixed(1)} g</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Magnesium: {magnesiumbedarf.toFixed(1)} g</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Natrium: {natriumbedarf.toFixed(1)} g</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Kalium: {kaliumbedarf.toFixed(1)} g</p>}
+                  {gewichtVorhanden && <p className="text-gray-600">Chlorid: {chloridbedarf.toFixed(1)} g</p>}
+                </div>
+
+                <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">Mengenelemente aus Heu (IST)</h3>
+                  <p className="text-xs text-gray-500 mb-4">auf Basis der LUFA-Durchnittswerte 2025</p>
+                  <p className="text-gray-600">
+                    Calcium: {heuCalcium.toFixed(1)} g{" "}
+                    <span className={`font-semibold ${calciumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({calciumDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Phosphor: {heuPhosphor.toFixed(1)} g{" "}
+                    <span className={`font-semibold ${phosphorDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({phosphorDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">Ca:P: {heuCaP.toFixed(1)} : 1</p>
+                  <p className="text-gray-600">
+                    Magnesium: {heuMagnesium.toFixed(1)}{" "}
+                    <span className={`font-semibold ${magnesiumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({magnesiumDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Natrium: {heuNatrium.toFixed(1)}{" "}
+                    <span className={`font-semibold ${natriumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({natriumDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Kalium: {heuKalium.toFixed(1)}{" "}
+                    <span className={`font-semibold ${kaliumDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({kaliumDifferenz.toFixed(1)} g)
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Spurenelemente</h3>
+                  <p className="text-gray-600">Zink: {zinkbedarf.toFixed(1)} mg</p>
+                  <p className="text-gray-600">Kupfer: {kupferbedarf.toFixed(1)} mg</p>
+                  <p className="text-gray-600">Mangan: {manganbedarf.toFixed(1)} mg</p>
+                  <p className="text-gray-600">Selen: {selenbedarf.toFixed(1)} mg</p>
+                  <p className="text-gray-600">Jod: {jodbedarf.toFixed(1)} mg</p>
+                </div>
+
+                <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">Spurenelemente aus Heu (IST)</h3>
+                  <p className="text-xs text-gray-500 mb-4">auf Basis der LUFA-Durchnittswerte 2025</p>
+                  <p className="text-gray-600">
+                    Zink: {heuZink.toFixed(1)} mg{" "}
+                    <span className={`font-semibold ${zinkDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({zinkDifferenz.toFixed(1)} mg)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Kupfer: {heuKupfer.toFixed(1)} mg{" "}
+                    <span className={`font-semibold ${kupferDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({kupferDifferenz.toFixed(1)} mg)
+                    </span>
+                  </p>
+                  <p className="text-gray-600">
+                    Selen: {heuSelen.toFixed(1)} mg{" "}
+                    <span className={`font-semibold ${selenDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
+                      ({selenDifferenz.toFixed(1)} mg)
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      <footer className="mt-16 border-t border-gray-200 text-center text-sm text-gray-500">
+        <div className="flex justify-center gap-6">
+        <a href="/impressum" className="hover:text-emerald-900">
+        Impressum 
+        </a>
+        <a href="/datenschutz" className="hover:text-emerald-900">
+        Datenschutz 
+        </a>
        
-
-
-        
-
-          {/* Fehlermeldungen für Gewicht */}
-           {gewichtalsZahl >1500 && ( <p> Das Gewicht darf maximal 1500 kg betragen. </p>)}
-           {gewichtalsZahl <= 0 && gewicht !== "" &&  ( <p> Das Gewicht muss größer als 0 kg sein. </p>)}
-
-          { berechnet && gewichtVorhanden &&(
-        <>
-        <div className="grid grid-cols-2 gap-4">
-         <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
-          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Grundbedarf (SOLL)</h3>
-           {gewichtVorhanden && (<p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Energie: {energiebedarf.toFixed(1)} MJ ME</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Protein {proteinbedarf.toFixed(1)} g dvRP</p>)}
         </div>
+      </footer>
 
-         <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
-          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Nährstoffdeckung aus Heu (IST)</h3>
-          <p className="text-xs text-gray-500 mb-4"  > auf Basis der LUFA-Durchnittswerte 2025</p>
-          
-          <p className="text-gray-600">Heu: {heumenge.toFixed(1)} kg</p> 
-          <p className="text-gray-600">Trockensubstanz (TS): 87.7 %</p> 
-          <p className="text-gray-600">Rohfaser: 32.8 % der TS</p> 
-          <p className="text-gray-600">Rohasche: 7.0 % der TS</p> 
-
-          <p className="text-gray-600"> Energie: {heuEnergie.toFixed(1)} MJ ME 
-          <span className={`font-semibold ${energieDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({energieDifferenz.toFixed(1)} MJ)
-            </span>
-            </p>
-            <p className="text-gray-600">Protein: {heuProtein.toFixed(1)} g dvRP 
-               <span className={`font-semibold ${proteinDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({proteinDifferenz.toFixed(1)} g)
-            </span>
-            </p>
-
-            <p className="text-gray-600">Zucker: {heuZucker.toFixed(1)} g </p>
-            <p className="text-gray-600">Stärke: {heustaerke.toFixed(1)} g </p>
-            <p className="text-gray-600">NSC: {heuNSCProzent.toFixed(1)} % in TS</p>
-        </div>
-
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4">
-        <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3"> Mengenelemente </h3>
-           {gewichtVorhanden && (<p className="text-gray-600">Calcium: {calciumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Phosphor: {phosphorbedarf.toFixed(1)} g</p>)}
-           
-           {gewichtVorhanden && (<p className="text-gray-600">Magnesiumb: {magnesiumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Natrium: {natriumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Kalium: {kaliumbedarf.toFixed(1)} g</p>)}
-           {gewichtVorhanden && (<p className="text-gray-600">Chlorid: {chloridbedarf.toFixed(1)} g</p>)}   
-           
-        </div>
-
-         <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
-          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Mengenelemente aus Heu (IST)</h3>
-          <p className="text-xs text-gray-500 mb-4"  > auf Basis der LUFA-Durchnittswerte 2025</p>
-
-           <p className="text-gray-600">Calcium: {heuCalcium.toFixed(1)} g  
-            <span className={`font-semibold ${calciumDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({calciumDifferenz.toFixed(1)} g)
-            </span>
-            </p>
-
-
-           <p className="text-gray-600">Phosphor: {heuPhosphor.toFixed(1)} g
-              <span className={`font-semibold ${phosphorDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({phosphorDifferenz.toFixed(1)} g)
-            </span>
-           </p>
-
-           <p className="text-gray-600">Ca:P: {heuCaP.toFixed(1)} : 1 </p>
-
-           <p className="text-gray-600">Magnesium: {heuMagnesium.toFixed(1)} 
-            <span className={`font-semibold ${magnesiumDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({magnesiumDifferenz.toFixed(1)} g)
-            </span>
-             </p>
-
-             <p className="text-gray-600">Natrium: {heuNatrium.toFixed(1)} 
-            <span className={`font-semibold ${natriumDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({natriumDifferenz.toFixed(1)} g)
-            </span>
-             </p>
-
-              <p className="text-gray-600">Kalium: {heuKalium.toFixed(1)} 
-            <span className={`font-semibold ${kaliumDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({kaliumDifferenz.toFixed(1)} g)
-            </span>
-             </p>
-
-          </div>
-        </div>
-        
-          <div className="grid grid-cols-2 gap-4">
-         <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50"> 
-           <h3 className="text-lg font-semibold text-gray-800 mb-3"> Spurenelemente </h3>
-           <p className="text-gray-600">Zink: {zinkbedarf.toFixed(1)} mg</p>
-          <p className="text-gray-600">Kupfer: {kupferbedarf.toFixed(1)} mg</p>
-           <p className="text-gray-600">Mangan: {manganbedarf.toFixed(1)} mg</p>
-           <p className="text-gray-600">Selen: {selenbedarf.toFixed(1)} mg</p>
-           <p className="text-gray-600">Jod: {jodbedarf.toFixed(1)} mg</p>
-        </div>
-
-        <div className="border border-green-100 rounded-xl p-5 mb-4 bg-green-50">
-          <h3 className="text-lg font-semibold text-gray-800 mb-1"> Spurenelemente aus Heu (IST)</h3>
-          <p className="text-xs text-gray-500 mb-4"  > auf Basis der LUFA-Durchnittswerte 2025</p>
-
-           <p className="text-gray-600">Zink: {heuZink.toFixed(1)} mg  
-            <span className={`font-semibold ${zinkDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({zinkDifferenz.toFixed(1)} mg)
-            </span>
-            </p>
-
-
-           <p className="text-gray-600">Kupfer: {heuKupfer.toFixed(1)} mg
-              <span className={`font-semibold ${kupferDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({kupferDifferenz.toFixed(1)} mg)
-            </span>
-           </p>
-
-           <p className="text-gray-600">Selen: {heuSelen.toFixed(1)} mg
-              <span className={`font-semibold ${selenDifferenz <0? "text-orange-600" :  "text-green-600"}`}>
-               ({selenDifferenz.toFixed(1)} mg)
-            </span>
-           </p>
-
-          
-
-          </div>
-        </div>
-        
-        </>
-        )}
-         </div>
-         
     </main>
   );
 }
