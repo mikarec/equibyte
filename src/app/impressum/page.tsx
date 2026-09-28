@@ -16,18 +16,18 @@ return (
             <h2 className="text-xl font-semibold text-emerald-950"> Angaben zum Anbieter 
             </h2>
             <p className="mt-4 text-gray-700">
-                Name: [Vorname, Nachname]
+                Name: Monique Gaebelein 
             </p>
             <p className="mt-4 text-gray-700">
-                Anschrift: [Straße und Hausnummer]
-            </p>
-
-            <p className="mt-4 text-gray-700">
-                [PLZ Ort ]
+                Anschrift: Hinter den Wiesen 5A 
             </p>
 
             <p className="mt-4 text-gray-700">
-               E-Mail [Email]
+                38531 Rötgesbüttel 
+            </p>
+
+            <p className="mt-4 text-gray-700">
+               E-Mail equibyte@icloud.com
             </p>
 
         </section>

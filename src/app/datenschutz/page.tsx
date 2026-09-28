@@ -23,10 +23,10 @@ export default function Impressum () {
             </p>
 
             <p className="mt-4 text-gray-700">
-                [Vorname, Nachname] <br/>
-                [Straße, Hausnummer]<br/>
-                [PLZ, Ort]<br/>
-                Email: [Email:]
+                Monique Gaebelein <br/>
+                Hinter den Wiesen 5A<br/>
+                38531 Rötgesbüttel<br/>
+                Email: equibyte@icloud.com
             </p>
         </section>
 
