@@ -35,11 +35,14 @@ export default function Home() {
 
   const [berechnet, setzeBerechnet]=useState(false); 
   const [pferdeName, setzePferdeName] = useState("");
+  const [heumenge, setzeHeumenge]= useState(""); 
   const [pferdetyp, setzePferdetyp] = useState(""); 
   const [gewicht, setzeGewicht] = useState("");
   const [alter, SetzeAlter] = useState("");
   const alterAlsZahl = Number(alter) || 0;
   const gewichtalsZahl= Number(gewicht) || 0;
+  const heumengealsZahl= Number(heumenge) || 0;
+ 
   
   
   
@@ -69,10 +72,12 @@ export default function Home() {
   }
 
 
- /*Heumenge berechnen*/ 
+ /*Heumenge berechnen nach GfE */
  function berechneHeumenge (gewicht: number):number {
   return gewicht*0.02;
  }
+
+ 
 
   /* Calciumbedarf berechnen */
   function berechneCalciumbedarf(gewicht: number, arbeit: string): number {
@@ -204,9 +209,10 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
 
 
-  const heumenge= berechneHeumenge(gewichtalsZahl);
+  //const heumenge= berechneHeumenge(gewichtalsZahl);
   //LUFA
-  const heuTrockensubstanz = heumenge * 0.877;
+  
+  const heuTrockensubstanz = heumengealsZahl * 0.877;
   const heuEnergie = heuTrockensubstanz*7; //MJ ME nach LUFA 2025 
   const heuRohprotein = heuTrockensubstanz*76; 
   const heuProtein = heuTrockensubstanz*45; 
@@ -275,14 +281,15 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
          <img
          src="/horse-head3.png"
          alt="Pferd auf der Weide"
-        className="absolute inset-0 h-full w-full object-cover object-top"
+        className="absolute inset-0 h-full w-full object-cover object-[60%_top]"
         />
 
   <div className="relative z-10 flex min-h-[400px] items-center px-12 md:px-20">
     <div className="max-w-xl -translate -x-20" >
       <h1 className="text-6xl font-bold tracking-tight text-emerald-950">
-        Equibyte
+        Equibyte 
       </h1>
+      <p className="mt-1 text-sm font-medium text-gray-700"> BETA</p>
       <p className="mt-4 text-2xl text-gray-500">
         Fütterung mit System
       </p>
@@ -300,7 +307,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
           <h2 className="text-xl font-semibold mb-6">Pferdedaten</h2>
 
-          <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-3 gap-6 mb-8 w-full">
             {/* Pferdegewicht Eingabe*/}
             <div className="flex flex-col gap-2">
               <label >Gewicht (kg):</label>
@@ -316,8 +323,24 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               />
             </div>
 
+             {/* Heumenge Eingabe*/}
+            <div className="flex flex-col gap-2 w-full">
+              <label >Heu (kg):</label>
+              <input
+                type="number"
+                min="0"
+                step="0.1"
+                value={heumenge}
+                onChange={(e) => {
+                  setzeHeumenge(e.target.value);
+                  setzeBerechnet(false);
+                }}
+                className="border border-gray-300 rounded-xl bg-white px-3 py-1 h-10 w-full"
+              />
+            </div>
+
             {/* Pferdealter Eingabe*/}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <label>Alter:</label>
               <input
                 type="number"
@@ -329,8 +352,15 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               />
             </div>
 
+            
+          </div>
+
+          {alterAlsZahl > 40 && <p>Das Alter darf maximal 40 Jahre betragen.</p>}
+          {alterAlsZahl <= 0 && alter !== "" && <p>Das Alter muss größer als 0 Jahre sein.</p>}
+
+          <div className="grid grid-cols-3 gap-8 mb-6">
             {/* Pferdetyp Eingabe*/}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <label>Typ</label>
               <select
                 value={pferdetyp}
@@ -346,13 +376,8 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
                 <option value="pony"> Pony</option>
               </select>
             </div>
-          </div>
 
-          {alterAlsZahl > 40 && <p>Das Alter darf maximal 40 Jahre betragen.</p>}
-          {alterAlsZahl <= 0 && alter !== "" && <p>Das Alter muss größer als 0 Jahre sein.</p>}
-
-          <div className="grid grid-cols-3 gap-8 mb-6">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
               <label>Körperzustand:</label>
               <select
                 value={koerperzustand}
@@ -368,8 +393,8 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
               </select>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label>Arbeitsleistung:</label>
+            <div className="flex flex-col gap-2 w-full">
+              <label>Belastung:</label>
               <select
                 value={arbeit}
                 onChange={(e) => {
@@ -384,11 +409,20 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
                 <option value="schwer">Schwere Arbeit</option>
               </select>
             </div>
+            
 
             <button
               className="mt-6  bg-green-700 text-white px-2 py-2 rounded-xl hover:bg-green-700 transition"
               onClick={() => {
                 console.log("Button wurde geklickt");
+                if(heumengealsZahl <0) {
+                  alert ("Die Heumenge darf nicht negativ sein."); 
+                  return;
+                }
+                if(heumengealsZahl <=0) {
+                  alert ("Die Heumenge muss größer als 0 kg sein."); 
+                  return; 
+                }
                 if (eingabeVollstaendig) {
                   setzeBerechnet(true);
                 } else {
@@ -409,15 +443,6 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
                 <div className="border border-slate-200 rounded-xl p-5 mb-4 bg-slate-50">
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">Grundbedarf (SOLL)</h3>
                    <p className="text-xs text-gray-500 mb-4"> Bedarf nach GfE Empfehlungen</p>
-
-
-                   <div className="mt-3 rounded-xl bg-white p-4 shadow-sm">
-                    
-                    <p className="text-sm text-gray-500"> Heu </p>
-                    <p className="mt-1 text-2xl font-bold text-emerald-950">{heumenge.toFixed(1)} kg 
-                    </p>
-                  </div>
-                 
                   
                   <div className="mt-3 rounded-xl bg-white p-4 shadow-sm">
                     <p className="text-sm text-gray-500">⚡Energie (ME) </p>
@@ -441,7 +466,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
                    <div className="mt-3 rounded-xl bg-green-100/60 p-4"> 
                     <p className="text-sm text-gray-500">Heu:</p>
-                    <p className="text-2xl font-bold text-emerald-950">{heumenge.toFixed(1)} kg</p>
+                    <p className="text-2xl font-bold text-emerald-950">{heumengealsZahl.toFixed(1)} kg</p>
                     </div>
 
                   
@@ -459,7 +484,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
 
                    <div className="mt-3 rounded-xl bg-green-100/60 p-4"> 
                     <p className="text-sm text-gray-500">🌱Protein (dvRP)</p>
-                    <p className="text-2xl font-bold text-emerald-950">{heuEnergie.toFixed(1)} MJ </p>
+                    <p className="text-2xl font-bold text-emerald-950">{heuProtein.toFixed(1)} g </p>
                     <p className={`mt-1 text-sm font-semibold ${proteinDifferenz < 0 ? "text-orange-600" : "text-green-600"}`}>
                       {proteinDifferenz >=0? "+" : ""}
                        {proteinDifferenz.toFixed(1) } g 
