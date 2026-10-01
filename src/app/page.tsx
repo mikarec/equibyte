@@ -287,7 +287,7 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
   <div className="relative z-10 flex min-h-[400px] items-center px-12 md:px-20">
     <div className="max-w-xl -translate -x-20" >
       <h1 className="text-6xl font-bold tracking-tight text-emerald-950">
-        Equibyte 
+        Equibytes 
       </h1>
       <p className="mt-1 text-sm font-medium text-gray-700"> BETA</p>
       <p className="mt-4 text-2xl text-gray-500">

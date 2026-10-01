@@ -37,10 +37,10 @@ return (
                 Verantwortlich für den Inhalt 
             </h2>
             <p className="mt-4 text-gray-700">
-                [Vorname, Nachname]
+                Monique Gaebelein 
             </p>
             <p className="text-gray-700"> 
-                [Anschrift]
+                Hinter den Wiesen 5A, 38531 GF
             </p>
         </section>
 
