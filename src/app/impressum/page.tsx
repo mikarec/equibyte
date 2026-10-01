@@ -5,7 +5,7 @@ return (
         <a
             href="/"
             className="text-sm text-gray-500 hover:text-emerald-900 font-bold">
-                ← Zurück zu Equibyte
+                ← Zurück zu Equibytes
             
             
         </a>
@@ -27,7 +27,7 @@ return (
             </p>
 
             <p className="mt-4 text-gray-700">
-               E-Mail equibyte@icloud.com
+               E-Mail equibytes@icloud.com
             </p>
 
         </section>
