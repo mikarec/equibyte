@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Equibytes",
+  title: " Pferde Rationsrechner - Equibytes",
   description: "Pferdefütterung mit System - Bedarf berechnen, Rationen analysieren und Nährstofflücken erkennen",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="de"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children} <Analytics/> </body>

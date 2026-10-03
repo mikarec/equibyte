@@ -291,11 +291,13 @@ function berechneJodbedarf(gewicht: number, arbeit: string): number {
       </h1>
       <p className="mt-1 text-sm font-medium text-gray-700"> BETA</p>
       <p className="mt-4 text-2xl text-gray-500">
-        Fütterung mit System
+         Pferde - Rationsrechner
       </p>
       <p className="mt-3 max-w-lg text-lg text-gray-500">
-        Bedarf berechnen, Ration analysieren <br/> 
-        und Nährstofflücken erkennen. 
+        Nährstoffbedarf berechnen, Heu analysieren  <br/> &  Ration bestimmen. 
+        Optimiere die  <br/> Pferdefütterung  deines Pferdes 
+        jetzt mit  <br/> dem   kostenlosen Rationsrechner! <br/> 
+        
       </p>
       <div className="mt-6 h-[2px] w-12 bg-gray-400"></div>
     </div>
